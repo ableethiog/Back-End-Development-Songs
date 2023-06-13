@@ -120,6 +120,16 @@ def update_song(id):
     else:
         return parse_json(db.songs.find_one({"id": id})), 201
 
+@app.route("/song/<int:id>", methods=["DELETE"])
+def delete_song(id):
+    # Delete the song from the database
+    result = db.songs.delete_one({"id": id})
 
+    # Check if the song was deleted successfully
+    if result.deleted_count == 0:
+        return jsonify({"message": "Song not found"}), 404
+
+    # Return an empty response with a status code of 204 No Content
+    return "", 204
 
 
