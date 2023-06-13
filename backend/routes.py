@@ -63,3 +63,17 @@ def count():
     count = db.songs.count_documents({})
 
     return {"count": count}, 200
+
+@app.route("/song", methods=["GET"])
+def songs():
+    songs = list(db.songs.find({}))
+
+    print(songs[0])
+    return {"songs": parse_json(songs)}, 200
+
+
+    # Format the data as a list of songs
+    #songs_list = [{"id": song["id"], "title": song["title"], "lyrics": song["lyrics"]} for song in songs]
+
+    # Return the data as a JSON response with a status code of 200 OK
+    #return jsonify({"songs": songs_list}), 200
