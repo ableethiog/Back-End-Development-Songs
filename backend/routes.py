@@ -71,9 +71,15 @@ def songs():
     print(songs[0])
     return {"songs": parse_json(songs)}, 200
 
+@app.route("/song/<int:id>", methods=["GET"])
+def get_song_by_id(id):
 
-    # Format the data as a list of songs
-    #songs_list = [{"id": song["id"], "title": song["title"], "lyrics": song["lyrics"]} for song in songs]
+    song = db.songs.find_one({"id": id})
 
-    # Return the data as a JSON response with a status code of 200 OK
-    #return jsonify({"songs": songs_list}), 200
+    # If the song is not found, return a 404 Not Found response
+    if song is None:
+        return {"message": f"Song with ID {id} not found"}, 404
+
+    # If the song is found, return it as a JSON response with a 200 OK status code
+    return parse_json(song), 200
+
